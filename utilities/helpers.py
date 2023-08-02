@@ -34,22 +34,11 @@ import json
 """
 Depature Models
 """
-base_directory_Dep = "Models/Dep"
+base_directory = "Models/Trained"
 
-DepRf = joblib.load(os.path.join(base_directory_Dep, "RandomForestRegressor"))
-DepCb = joblib.load(os.path.join(base_directory_Dep, "CatBoostRegressor"))
-DepXb = joblib.load(os.path.join(base_directory_Dep, "XGBRegressor"))
-
-
-"""
-Arrival Models
-"""
-
-base_directory_Arr = "Models/Arr"
-
-ArrRf = joblib.load(os.path.join(base_directory_Arr, "RandomForestRegressor"))
-ArrCb = joblib.load(os.path.join(base_directory_Arr, "CatBoostRegressor"))
-ArrXb = joblib.load(os.path.join(base_directory_Arr, "XGBRegressor"))
+DepDt = joblib.load(os.path.join(base_directory, "DecisionTreeRegressor"))
+DepCb = joblib.load(os.path.join(base_directory, "CatBoostRegressor"))
+DepXb = joblib.load(os.path.join(base_directory, "XGBRegressor"))
 
 
 def navigation_bar():
@@ -79,17 +68,12 @@ def navigation_bar():
 
 
 def pred(arr_input):
-    DepDelay = (
-        (DepRf.predict(arr_input) * 0.3333)
-        + (DepCb.predict(arr_input) * 0.3333)
-        + (DepXb.predict(arr_input) * 0.3333)
+    Delay = (
+        (DepCb.predict(arr_input) * 0.35)
+        + (DepXb.predict(arr_input) * 0.35)
+        + (DepDt.predict(arr_input) * 0.30)
     )
-    ArrDelay = (
-        (ArrRf.predict(arr_input) * 0.3333)
-        + (ArrCb.predict(arr_input) * 0.3333)
-        + (ArrXb.predict(arr_input) * 0.3333)
-    )
-    return DepDelay[0], ArrDelay[0]
+    return Delay[0][0], Delay[0][1]
 
 
 def text_animation(Text):
