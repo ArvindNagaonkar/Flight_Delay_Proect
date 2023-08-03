@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 import pandas as pd
 import datetime
 import plotly.figure_factory as ff
@@ -28,11 +29,8 @@ from utilities.plots import (
     scatter_Dep_Arr,
 )
 
-# from streamlit_lottie import st_lottie
-import json
-
 """
-Depature Models
+Trained Models
 """
 base_directory = "Models/Trained"
 
@@ -85,8 +83,8 @@ def text_animation(Text):
             }
 
         .animated-text {
-            width: 65ch;
-            animation: typing 6s steps(65), blink .5s step-end infinite alternate;
+            width: 70ch;
+            animation: typing 6s steps(70), blink .5s step-end infinite alternate;
             white-space: nowrap;
             overflow: hidden;
             border-right: 3px solid;
@@ -165,9 +163,19 @@ def pred_section(transfrom):
         ArrDelayMinutes = (f"{ArrDelay:.2f}").split(".")[0]
         ArrDelaySec = (f"{ArrDelay:.2f}").split(".")[1]
 
-        out1 = f"The Predicted Departure Delay is {DepDelayMinutes} Minutes and {DepDelaySec} seconds."
-        out2 = f"The Predicted Arrival Delay is {ArrDelayMinutes} Minutes and {ArrDelaySec} seconds."
+        if int(DepDelayMinutes) < 0:
+            out1 = f"Flight departure earlier than expected by {abs(int(DepDelayMinutes))} minutes and {DepDelaySec} seconds."
+        else:
+            out1 = f"The Predicted departure delay is {DepDelayMinutes} minutes and {DepDelaySec} seconds."
+        # out1 = f"The Predicted Departure Delay is {DepDelayMinutes} Minutes and {DepDelaySec} seconds."
+
+        if int(ArrDelayMinutes) < 0:
+            out2 = f"Flight arrived earlier than expected by {abs(int(ArrDelayMinutes))} minutes and {ArrDelaySec} seconds."
+        else:
+            out2 = f"The predicted arrival pelay is {ArrDelayMinutes} minutes and {ArrDelaySec} seconds."
+
         text_animation(out1)
+        time.sleep(5)
         text_animation(out2)
 
 
@@ -180,48 +188,56 @@ def insights_section():
     """
     Weekly Flights: How each no. of flights get SCHEDULED for week and in sigle day
     """
+    st.write("")
     st.markdown("### 1. Weekly Flights:")
     st.plotly_chart(flights_dist, use_container_width=True)
 
     """
     Flight Delays by months
     """
+    st.write("")
     st.markdown("### 2. Flight Delays by Month:")
     st.plotly_chart(AVG_Depdelay_per_month_plot, use_container_width=True)
 
     """
     Flight Delays by Daytime
     """
+    st.write("")
     st.markdown("### 3. Flight Delays by Daytime:")
     st.plotly_chart(DayDist_plot, use_container_width=True)
 
     """
     Average Departure Delay by Airline
     """
+    st.write("")
     st.markdown("### 4. Average Departure Delay by Airline:")
     st.plotly_chart(DepDelay_Ariline, use_container_width=True)
 
     """
     Average Arrival Delay by Airline
     """
+    st.write("")
     st.markdown("### 5. Average Arrival Delay by Airline:")
     st.plotly_chart(ArrDelay_Ariline, use_container_width=True)
 
     """
     Stack Bar Plot - Delay Types by Airline
     """
+    st.write("")
     st.markdown("###  6. Delay Types by Airline:")
     st.plotly_chart(DelayTypesbyAirline, use_container_width=True)
 
     """
     line Plot - Delay Types by Time of Day
     """
+    st.write("")
     st.markdown("###  7. Delay Types by Time of Day:")
     st.plotly_chart(DelayTypesbyTimeofDay_plot, use_container_width=True)
 
     """
     Top 10 Cities with Highest Average Departure Delay
     """
+    st.write("")
     st.markdown("### 8. Top 10 Cities with Highest Average Departure Delay:")
     st.plotly_chart(
         TopCities_with_highest_Avg_Departure_delay_plot, use_container_width=True
@@ -230,12 +246,14 @@ def insights_section():
     """
     Top 10 Cites with Highets Average TaxiIn(minutes) time
     """
+    st.write("")
     st.markdown("### 9. Top 10 Cites with Highets Average TaxiIn(minutes) time:")
     st.plotly_chart(TopCities_with_highest_Avg_TaxiIn_plot, use_container_width=True)
 
     """
     Top 10 Cities with Highest Average Arrival Delay
     """
+    st.write("")
     st.markdown("### 10. Top 10 Cities with Highest Average Arrival Delay:")
     st.plotly_chart(
         TopCities_with_highest_Avg_Arrival_delay_plot, use_container_width=True
@@ -244,17 +262,20 @@ def insights_section():
     """
     Top 10 Cites with Highets Average TaxiOut(minutes) time
     """
+    st.write("")
     st.markdown("### 11. Top 10 Cites with Highets Average TaxiOut(minutes) time:")
     st.plotly_chart(TopCities_with_highest_Avg_TaxiOut_plot, use_container_width=True)
 
     """
     Scatter Plot - Delay vs. Distance
     """
+    st.write("")
     st.markdown("###  12. Scatter Plot - Delay vs. Distance:")
     st.plotly_chart(scatter_Dist_Delay, use_container_width=True)
 
     """
     Scatter Plot - Departure Delay vs. Arrival Delay
     """
+    st.write("")
     st.markdown("###  13. Scatter Plot - Departure Delay vs. Arrival Delay:")
     st.plotly_chart(scatter_Dep_Arr, use_container_width=True)
