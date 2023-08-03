@@ -172,7 +172,7 @@ def pred_section(transfrom):
         if int(ArrDelayMinutes) < 0:
             out2 = f"Flight arrived earlier than expected by {abs(int(ArrDelayMinutes))} minutes and {ArrDelaySec} seconds."
         else:
-            out2 = f"The predicted arrival pelay is {ArrDelayMinutes} minutes and {ArrDelaySec} seconds."
+            out2 = f"The predicted arrival delay is {ArrDelayMinutes} minutes and {ArrDelaySec} seconds."
 
         text_animation(out1)
         time.sleep(5)
